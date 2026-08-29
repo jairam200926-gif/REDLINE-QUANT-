@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fcf8f4">
+  <title>Redline Quant — Systematic Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Betania+Patmos&family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-effects" aria-hidden="true">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="grid-noise"></div>
+  </div>
+
+  <header class="glass-header">
+    <a class="brand" href="#home" aria-label="Redline Quant home">
+      <b>R</b><span>REDLINE <i>QUANT</i></span>
+    </a>
+    <nav>
+      <a href="#terminal">Terminal</a>
+      <a href="#strategy">Strategy Lab</a>
+      <a href="#live">Live Trading</a>
+      <a href="#guide">Beginner Guide</a>
+    </nav>
+    <div class="engine"><span class="live-dot"></span> LIVE ENGINE</div>
+  </header>
+
+  <main>
+    <!-- 01 / HERO -->
+    <section class="slide hero" id="home">
+      <div class="section-tag glass-pill reveal"><span class="live-dot"></span> 01 / SYSTEMATIC INTELLIGENCE</div>
+      <div class="hero-copy">
+        <h1 class="reveal reveal-1">Trade with<br><em>Jai RG</em></h1>
+        <p class="reveal reveal-2">Data-led market research, backtesting and live charting for traders who demand more from every decision.</p>
+        <a class="jump reveal reveal-3" href="#terminal">Enter terminal <span>↓</span></a>
+      </div>
+      <div class="red-orbit" aria-hidden="true"></div>
+    </section>
+
+    <!-- 02 / BACKTEST TERMINAL -->
+    <section class="slide terminal" id="terminal">
+      <div class="section-tag glass-pill reveal"><span class="live-dot"></span> 02 / BACKTEST TERMINAL</div>
+      <div class="two-column">
+        <div class="section-copy reveal">
+          <h2>Configure<br><span>the edge.</span></h2>
+          <p>Choose an instrument and strategy inputs. The same selected stock is shared across the terminal and live market view.</p>
+
+          <label class="field-label" for="instrumentSearch">Instrument</label>
+          <div class="search-wrap">
+            <input id="instrumentSearch" autocomplete="off" placeholder="Search AAPL, RELIANCE, TCS..." aria-autocomplete="list">
+            <button id="clearInstrument" class="clear-btn" type="button" aria-label="Clear instrument">×</button>
+            <div id="stockResults" class="stock-results" role="listbox"></div>
+          </div>
+          <div id="selectedStock" class="selected-stock" hidden></div>
+
+          <div class="form-row">
+            <div>
+              <label class="field-label" for="fromDate">From</label>
+              <input id="fromDate" type="date" value="2021-01-01">
+            </div>
+            <div>
+              <label class="field-label" for="toDate">To</label>
+              <input id="toDate" type="date" value="2023-12-31">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div>
+              <label class="field-label" for="fastMA">Fast MA</label>
+              <input id="fastMA" type="number" min="1" value="20">
+            </div>
+            <div>
+              <label class="field-label" for="slowMA">Slow MA</label>
+              <input id="slowMA" type="number" min="2" value="50">
+            </div>
+          </div>
+
+          <button id="runBacktest" class="primary-btn" type="button">Run backtest <span>→</span></button>
+          <p id="terminalStatus" class="status-text">Ready. Select an instrument to begin.</p>
+        </div>
+
+        <aside class="glass-panel result-panel reveal reveal-2">
+          <div class="panel-top"><span>MARKET</span><strong id="resultSymbol">—</strong></div>
+          <div class="metric"><span>Strategy return</span><strong id="strategyReturn">—</strong><small>vs benchmark</small></div>
+          <div class="metric"><span>Strategy equity</span><div id="equityMini" class="mini-chart"></div></div>
+          <div class="metric-grid">
+            <div><span>Win rate</span><strong id="winRate">—</strong></div>
+            <div><span>Trades</span><strong id="tradeCount">—</strong></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 03 / STRATEGY LAB -->
+    <section class="slide strategy" id="strategy">
+      <div class="section-tag glass-pill reveal"><span class="live-dot"></span> 03 / STRATEGY LAB</div>
+
+      <div class="lab-layout">
+        <!-- LEFT — Configuration Panel -->
+        <div class="lab-config reveal">
+          <h2>60-day intraday<br><em>research.</em></h2>
+          <p class="lab-desc">15-minute interval data · SMA20 · SMA50 · Daily &amp; weekly performance breakdown. Select a stock above and run a real analysis.</p>
+
+          <!-- Selected Instrument Display -->
+          <div class="lab-instrument glass-card" id="labInstrumentCard">
+            <div class="lab-inst-row">
+              <div>
+                <span class="field-label" style="margin-top:0;">Instrument</span>
+                <strong id="labSymbol" class="lab-sym">—</strong>
+                <span id="labCompany" class="lab-company">Select a stock in the Backtest Terminal above</span>
+              </div>
+              <div class="lab-exchange-badge" id="labExchange">—</div>
+            </div>
+            <div class="lab-period-note">
+              <span class="live-dot" style="background:#f32235;width:5px;height:5px;margin-right:6px;"></span>
+              60-day window · 15-min intervals · Yahoo Finance
+            </div>
+          </div>
+
+          <!-- Run Button -->
+          <button id="runStrategyLab" class="primary-btn lab-run-btn" type="button">
+            Run analysis <span>&#8594;</span>
+          </button>
+          <p id="labStatus" class="status-text">Select an instrument above, then run analysis.</p>
+
+          <!-- Loading Steps -->
+          <div id="labLoading" class="lab-loading" hidden>
+            <div class="lab-step" id="step1"><span class="step-dot"></span> Downloading market data&#8230;</div>
+            <div class="lab-step" id="step2"><span class="step-dot"></span> Calculating SMA20 / SMA50&#8230;</div>
+            <div class="lab-step" id="step3"><span class="step-dot"></span> Building daily &amp; weekly report&#8230;</div>
+            <div class="lab-step" id="step4"><span class="step-dot"></span> Generating CSV &amp; Excel files&#8230;</div>
+          </div>
+        </div>
+
+        <!-- RIGHT — Results Panel -->
+        <aside class="lab-results glass-panel reveal reveal-2" id="labResults">
+          <!-- Empty State -->
+          <div id="labEmptyState" class="lab-empty">
+            <div class="lab-empty-icon">&#128202;</div>
+            <p>Run an analysis to see<br>real market insights here.</p>
+          </div>
+
+          <!-- Results (hidden until data arrives) -->
+          <div id="labResultsContent" hidden>
+
+            <!-- Header Row -->
+            <div class="lab-result-header">
+              <div>
+                <span class="lab-result-sym" id="resSymbol">—</span>
+                <span class="lab-result-name" id="resCompany">—</span>
+              </div>
+              <span class="lab-period-badge">60D · 15m</span>
+            </div>
+
+            <!-- Overall Return — hero metric -->
+            <div class="lab-hero-metric">
+              <span class="lab-metric-label">Overall 60-Day Return</span>
+              <strong id="resReturn" class="lab-hero-val">—</strong>
+            </div>
+
+            <!-- Price Range -->
+            <div class="lab-metric-row">
+              <div class="lab-metric-item">
+                <span class="lab-metric-label">Highest Price</span>
+                <strong id="resHigh" class="lab-metric-val">—</strong>
+              </div>
+              <div class="lab-metric-item">
+                <span class="lab-metric-label">Lowest Price</span>
+                <strong id="resLow" class="lab-metric-val">—</strong>
+              </div>
+            </div>
+
+            <!-- Best / Worst Day -->
+            <div class="lab-metric-row">
+              <div class="lab-metric-item">
+                <span class="lab-metric-label">Best Day</span>
+                <strong id="resBestDayReturn" class="lab-metric-val positive">—</strong>
+                <small id="resBestDayDate" class="lab-meta-date">—</small>
+              </div>
+              <div class="lab-metric-item">
+                <span class="lab-metric-label">Worst Day</span>
+                <strong id="resWorstDayReturn" class="lab-metric-val negative">—</strong>
+                <small id="resWorstDayDate" class="lab-meta-date">—</small>
+              </div>
+            </div>
+
+            <!-- Best / Worst Week -->
+            <div class="lab-metric-row">
+              <div class="lab-metric-item">
+                <span class="lab-metric-label">Best Week</span>
+                <strong id="resBestWeekReturn" class="lab-metric-val positive">—</strong>
+                <small id="resBestWeekDate" class="lab-meta-date">—</small>
+              </div>
+              <div class="lab-metric-item">
+                <span class="lab-metric-label">Worst Week</span>
+                <strong id="resWorstWeekReturn" class="lab-metric-val negative">—</strong>
+                <small id="resWorstWeekDate" class="lab-meta-date">—</small>
+              </div>
+            </div>
+
+            <!-- SMA Values -->
+            <div class="lab-metric-row">
+              <div class="lab-metric-item">
+                <span class="lab-metric-label">SMA 20 (last)</span>
+                <strong id="resSMA20" class="lab-metric-val">—</strong>
+              </div>
+              <div class="lab-metric-item">
+                <span class="lab-metric-label">SMA 50 (last)</span>
+                <strong id="resSMA50" class="lab-metric-val">—</strong>
+              </div>
+            </div>
+
+            <!-- Download Buttons -->
+            <div class="lab-downloads">
+              <button id="downloadCsv" class="download-btn" type="button">
+                <span class="dl-icon">&#8595;</span> Download CSV
+              </button>
+              <button id="downloadExcel" class="download-btn download-btn-excel" type="button">
+                <span class="dl-icon">&#8595;</span> Download Excel
+              </button>
+            </div>
+            <p class="lab-dl-note">Excel: 3 sheets — 15m Data · Daily Analysis · Weekly Analysis — with charts.</p>
+
+          </div><!-- /labResultsContent -->
+        </aside>
+      </div><!-- /lab-layout -->
+    </section>
+
+    <!-- 04 / LIVE TRADINGVIEW -->
+    <section class="slide live-slide" id="live">
+      <div class="section-tag glass-pill reveal"><span class="live-dot"></span> 04 / LIVE TRADINGVIEW</div>
+      <div class="live-layout">
+        <div class="section-copy reveal">
+          <h2>Real-time market view.<br><em>In your hand.</em></h2>
+          <p>Track the selected instrument with live TradingView charting, technical indicators and market data. Pick an Indian or US stock above and the live view updates automatically.</p>
+          <div class="live-stats">
+            <div class="glass-card"><span>Selected</span><strong id="liveSymbol">—</strong></div>
+            <div class="glass-card"><span>Market</span><strong id="liveMarket">—</strong></div>
+            <div class="glass-card"><span>Chart</span><strong style="color:var(--red);">LIVE</strong></div>
+          </div>
+          <a class="secondary-btn" href="#guide">Beginner Guide <span>→</span></a>
+        </div>
+
+        <div class="phone reveal reveal-2" aria-label="Live TradingView mobile chart">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-bar">
+              <span id="phoneSymbol">—</span>
+              <span class="phone-live"><i></i> LIVE</span>
+            </div>
+            <div id="tradingview-container" style="width:100%;height:calc(100% - 45px);position:relative;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 / BEGINNER GUIDE RESEARCH -->
+    <section class="slide guide-slide" id="guide">
+      <div class="section-tag glass-pill reveal"><span class="live-dot"></span> 05 / BEGINNER GUIDE RESEARCH</div>
+
+      <div class="guide-hero reveal">
+        <h2>Start here.<br><em>Understand the market.</em></h2>
+        <p class="guide-subtitle">New to markets? Learn the essential ideas behind stocks, charts, strategies and backtesting — one concept at a time.</p>
+        <div class="guide-hero-actions">
+          <a class="primary-btn" href="#learning-path">Start learning ↓</a>
+          <a class="secondary-btn" href="#how-it-works">Platform workflow →</a>
+        </div>
+      </div>
+
+      <!-- Visual Learning Path (01 to 08 Clickable Cards) -->
+      <div class="learning-path-wrap reveal" id="learning-path">
+        <span class="field-label">Beginner Learning Path — Select a track</span>
+        <div class="learning-path-grid">
+          <a class="path-card" href="#topic-markets"><span class="path-no">01</span><strong>MARKETS</strong><small>The Ecosystem</small></a>
+          <a class="path-card" href="#topic-stocks"><span class="path-no">02</span><strong>STOCKS</strong><small>Shares &amp; Tickers</small></a>
+          <a class="path-card" href="#topic-charts"><span class="path-no">03</span><strong>CHARTS</strong><small>Candlesticks &amp; OHLC</small></a>
+          <a class="path-card" href="#topic-indicators"><span class="path-no">04</span><strong>INDICATORS</strong><small>SMA20 &amp; SMA50</small></a>
+          <a class="path-card" href="#topic-strategies"><span class="path-no">05</span><strong>STRATEGIES</strong><small>Rules &amp; Signals</small></a>
+          <a class="path-card" href="#topic-backtesting"><span class="path-no">06</span><strong>BACKTESTING</strong><small>Simulating Edge</small></a>
+          <a class="path-card" href="#topic-risk"><span class="path-no">07</span><strong>RISK</strong><small>Capital &amp; Reality</small></a>
+          <a class="path-card" href="#topic-platform"><span class="path-no">08</span><strong>RESEARCH</strong><small>Redline Ecosystem</small></a>
+        </div>
+      </div>
+
+      <!-- Topic Sections -->
+      <div class="guide-content">
+
+        <!-- TOPIC 01: MARKETS & BASICS -->
+        <div class="guide-block reveal" id="topic-markets">
+          <div class="block-header">
+            <span class="block-num">01 / FOUNDATION</span>
+            <h3>The market, <em>explained simply.</em></h3>
+            <p>A stock market is a regulated global marketplace where buyers and sellers meet to trade shares in public companies.</p>
+          </div>
+
+          <div class="concepts-grid">
+            <!-- Stock -->
+            <div class="concept-card glass-card">
+              <div class="concept-top">
+                <span class="concept-tag">01</span>
+                <h4>What is a stock?</h4>
+              </div>
+              <p class="concept-short">A stock represents a small ownership share (equity) in a company.</p>
+              <button class="learn-more-btn" type="button" aria-expanded="false">Learn more <span>→</span></button>
+              <div class="concept-detail" hidden>
+                <p>When a corporation grows or generates profit, the value of that ownership share can rise. If you own 1 share of Apple or ITC, you own a fractional claim on that company's assets and earnings.</p>
+              </div>
+            </div>
+
+            <!-- Stock Market -->
+            <div class="concept-card glass-card">
+              <div class="concept-top">
+                <span class="concept-tag">02</span>
+                <h4>What is the stock market?</h4>
+              </div>
+              <p class="concept-short">A marketplace connecting buyers and sellers to discover fair prices.</p>
+              <button class="learn-more-btn" type="button" aria-expanded="false">Learn more <span>→</span></button>
+              <div class="concept-detail" hidden>
+                <p>Just like any market discovers the price of goods through supply and demand, stock markets establish the live price of every share based on buyer interest (bids) and seller willingness (asks).</p>
+              </div>
+            </div>
+
+            <!-- Trading vs Investing -->
+            <div class="concept-card glass-card">
+              <div class="concept-top">
+                <span class="concept-tag">03</span>
+                <h4>Trading vs. Investing</h4>
+              </div>
+              <p class="concept-short">Investing focuses on long-term growth; trading focuses on rule-based price movements.</p>
+              <button class="learn-more-btn" type="button" aria-expanded="false">Learn more <span>→</span></button>
+              <div class="concept-detail" hidden>
+                <p><strong>Investors</strong> hold stocks for months or years, banking on company growth and dividends. <strong>Traders</strong> use technical indicators, quantitative rules, and timeframe setups to profit from short-to-medium term fluctuations.</p>
+              </div>
+            </div>
+
+            <!-- Ticker -->
+            <div class="concept-card glass-card">
+              <div class="concept-top">
+                <span class="concept-tag">04</span>
+                <h4>Stock Symbol / Ticker</h4>
+              </div>
+              <p class="concept-short">The short unique code used to identify a company on an exchange.</p>
+              <button class="learn-more-btn" type="button" aria-expanded="false">Learn more <span>→</span></button>
+              <div class="concept-detail" hidden>
+                <p>Instead of typing full company names, markets use standard abbreviations: <code>ITC</code> for ITC Limited, <code>RELIANCE</code> for Reliance Industries, and <code>AAPL</code> for Apple Inc. Redline Quant connects these symbols across search, backtests, and TradingView.</p>
+              </div>
+            </div>
+
+            <!-- Price & Volume -->
+            <div class="concept-card glass-card">
+              <div class="concept-top">
+                <span class="concept-tag">05</span>
+                <h4>Price &amp; Volume</h4>
+              </div>
+              <p class="concept-short">Price is what you pay; volume is the total quantity of shares traded.</p>
+              <button class="learn-more-btn" type="button" aria-expanded="false">Learn more <span>→</span></button>
+              <div class="concept-detail" hidden>
+                <p>High volume indicates strong market participation and liquidity, making it easier to enter and exit positions at target prices without excessive slippage.</p>
+              </div>
+            </div>
+
+            <!-- Return -->
+            <div class="concept-card glass-card">
+              <div class="concept-top">
+                <span class="concept-tag">06</span>
+                <h4>Return (%)</h4>
+              </div>
+              <p class="concept-short">The percentage gain or loss generated over a holding period.</p>
+              <button class="learn-more-btn" type="button" aria-expanded="false">Learn more <span>→</span></button>
+              <div class="concept-detail" hidden>
+                <p>Formula: <code>((Exit Price - Entry Price) / Entry Price) × 100</code>. For instance, if you buy at ₹400 and sell at ₹440, your return is +10.00%.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOPIC 02: INDIA & US MARKETS -->
+        <div class="guide-block reveal" id="topic-stocks">
+          <div class="block-header">
+            <span class="block-num">02 / UNIVERSE</span>
+            <h3>India vs. United States <em>markets.</em></h3>
+            <p>Redline Quant seamlessly supports both major global trading environments.</p>
+          </div>
+
+          <div class="market-compare-grid">
+            <!-- India Card -->
+            <div class="market-card glass-panel">
+              <div class="market-flag-row">
+                <span class="market-badge">INDIAN MARKET</span>
+                <span class="currency-tag">₹ INR</span>
+              </div>
+              <h4>National Stock Exchange (NSE) &amp; BSE</h4>
+              <p>India's leading equity exchanges, denominated in Indian Rupees. Active trading hours: Monday–Friday 09:15 to 15:30 IST.</p>
+              <div class="market-examples">
+                <span class="ex-label">Representative Examples:</span>
+                <div class="tag-row">
+                  <span class="stock-pill">ITC · ITC Limited</span>
+                  <span class="stock-pill">RELIANCE · Reliance Industries</span>
+                  <span class="stock-pill">TCS · Tata Consultancy</span>
+                  <span class="stock-pill">INFY · Infosys</span>
+                </div>
+              </div>
+              <small class="disclaimer-note">*Examples for educational reference only, not financial recommendations.</small>
+            </div>
+
+            <!-- US Card -->
+            <div class="market-card glass-panel">
+              <div class="market-flag-row">
+                <span class="market-badge">UNITED STATES MARKET</span>
+                <span class="currency-tag">$ USD</span>
+              </div>
+              <h4>NYSE &amp; NASDAQ</h4>
+              <p>The world's largest equity markets by capitalization, denominated in US Dollars. Active trading hours: Monday–Friday 09:30 to 16:00 EST.</p>
+              <div class="market-examples">
+                <span class="ex-label">Representative Examples:</span>
+                <div class="tag-row">
+                  <span class="stock-pill">AAPL · Apple Inc.</span>
+                  <span class="stock-pill">MSFT · Microsoft Corp</span>
+                  <span class="stock-pill">AMZN · Amazon.com</span>
+                  <span class="stock-pill">NVDA · NVIDIA</span>
+                </div>
+              </div>
+              <small class="disclaimer-note">*Examples for educational reference only, not financial recommendations.</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOPIC 03: CANDLESTICK CHARTS -->
+        <div class="guide-block reveal" id="topic-charts">
+          <div class="block-header">
+            <span class="block-num">03 / VISUALIZATION</span>
+            <h3>How to read <em>candlestick charts.</em></h3>
+            <p>Each candle visualizes 4 critical price points (OHLC) over a chosen timeframe (e.g. 15 minutes or 1 day).</p>
+          </div>
+
+          <div class="candle-diagram-wrap glass-panel">
+            <div class="candle-visuals">
+              <!-- Bullish Green Candle -->
+              <div class="candle-box green">
+                <div class="candle-label top">High (Upper Wick Peak)</div>
+                <div class="wick upper"></div>
+                <div class="candle-body green">
+                  <span class="ohlc-mark top">Close</span>
+                  <span class="body-label">BULLISH (UP)<br>Close &gt; Open</span>
+                  <span class="ohlc-mark bottom">Open</span>
+                </div>
+                <div class="wick lower"></div>
+                <div class="candle-label bottom">Low (Lower Wick Bottom)</div>
+              </div>
+
+              <!-- Bearish Red Candle -->
+              <div class="candle-box red">
+                <div class="candle-label top">High (Upper Wick Peak)</div>
+                <div class="wick upper"></div>
+                <div class="candle-body red">
+                  <span class="ohlc-mark top">Open</span>
+                  <span class="body-label">BEARISH (DOWN)<br>Close &lt; Open</span>
+                  <span class="ohlc-mark bottom">Close</span>
+                </div>
+                <div class="wick lower"></div>
+                <div class="candle-label bottom">Low (Lower Wick Bottom)</div>
+              </div>
+            </div>
+
+            <div class="candle-explainer">
+              <div class="ohlc-item">
+                <strong>OPEN (O)</strong>
+                <p>The price at the very beginning of the selected candle interval.</p>
+              </div>
+              <div class="ohlc-item">
+                <strong>HIGH (H)</strong>
+                <p>The highest price reached by buyers during that interval (top of the upper wick).</p>
+              </div>
+              <div class="ohlc-item">
+                <strong>LOW (L)</strong>
+                <p>The lowest price touched during that interval (bottom of the lower wick).</p>
+              </div>
+              <div class="ohlc-item">
+                <strong>CLOSE (C)</strong>
+                <p>The final recorded price when the interval ended. Determines green vs red candle color.</p>
+              </div>
+              <div class="ohlc-item highlight">
+                <strong>WICKS (SHADOWS)</strong>
+                <p>The thin vertical lines extending above and below the body show price rejection and total session volatility.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOPIC 04: MOVING AVERAGES -->
+        <div class="guide-block reveal" id="topic-indicators">
+          <div class="block-header">
+            <span class="block-num">04 / INDICATORS</span>
+            <h3>What is a <em>moving average?</em></h3>
+            <p>A moving average smooths out raw price fluctuations so you can identify the underlying trend direction more clearly.</p>
+          </div>
+
+          <div class="two-card-row">
+            <div class="glass-card indicator-card">
+              <span class="concept-tag">FAST</span>
+              <h4>SMA 20 (Simple Moving Average)</h4>
+              <p class="concept-desc">Calculates the arithmetic average of closing prices over the <strong>last 20 periods</strong>.</p>
+              <ul class="indicator-points">
+                <li>Reacts rapidly to recent price shifts and momentum.</li>
+                <li>Hugs the current price action closely.</li>
+                <li>Used as a trigger line in crossover strategies.</li>
+              </ul>
+            </div>
+
+            <div class="glass-card indicator-card">
+              <span class="concept-tag" style="background:rgba(243,34,53,.15);">SLOW</span>
+              <h4>SMA 50 (Simple Moving Average)</h4>
+              <p class="concept-desc">Calculates the arithmetic average of closing prices over the <strong>last 50 periods</strong>.</p>
+              <ul class="indicator-points">
+                <li>Smooths out short-term noise to reflect the broader trend.</li>
+                <li>Acts as dynamic baseline support or resistance.</li>
+                <li>Used to confirm directional bias before taking signals.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOPIC 05 & 06: STRATEGIES & BACKTESTING -->
+        <div class="guide-block reveal" id="topic-strategies">
+          <div class="block-header">
+            <span class="block-num">05 / SYSTEMATICS</span>
+            <h3>What is a <em>trading strategy &amp; backtesting?</em></h3>
+            <p>A trading strategy is a precise set of rules for entering, managing, and exiting trades. Backtesting tests those rules on historical data before risking capital.</p>
+          </div>
+
+          <div class="backtest-flow-card glass-panel" id="topic-backtesting">
+            <h4>The Quantitative Research Lifecycle</h4>
+            <div class="lifecycle-steps">
+              <div class="life-step">
+                <span class="step-num">01</span>
+                <strong>Idea</strong>
+                <small>"Fast MA crossing Slow MA signals a new uptrend"</small>
+              </div>
+              <span class="flow-arrow">→</span>
+              <div class="life-step">
+                <span class="step-num">02</span>
+                <strong>Rules</strong>
+                <small>Entry when SMA20 &gt; SMA50; Exit when SMA20 &lt; SMA50</small>
+              </div>
+              <span class="flow-arrow">→</span>
+              <div class="life-step">
+                <span class="step-num">03</span>
+                <strong>Historical Data</strong>
+                <small>Pull 15m or daily OHLC bars from Yahoo Finance</small>
+              </div>
+              <span class="flow-arrow">→</span>
+              <div class="life-step">
+                <span class="step-num">04</span>
+                <strong>Simulation</strong>
+                <small>Execute every simulated trade with slippage &amp; commissions</small>
+              </div>
+              <span class="flow-arrow">→</span>
+              <div class="life-step">
+                <span class="step-num">05</span>
+                <strong>Evaluation</strong>
+                <small>Review Win Rate, Sharpe, Return vs Benchmark</small>
+              </div>
+            </div>
+
+            <div class="backtest-actions">
+              <a class="primary-btn inline" href="#terminal">Try Backtest Terminal →</a>
+              <a class="secondary-btn" href="#strategy">Open Strategy Lab →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOPIC: UNDERSTANDING RESULTS -->
+        <div class="guide-block reveal">
+          <div class="block-header">
+            <span class="block-num">06 / METRICS</span>
+            <h3>Understanding your <em>analysis metrics.</em></h3>
+            <p>Every number in Redline Quant Strategy Lab and Backtest Terminal serves a quantitative purpose:</p>
+          </div>
+
+          <div class="metric-guide-grid">
+            <div class="metric-explain-card glass-card">
+              <span class="met-name">STRATEGY RETURN</span>
+              <p>The total compounding percentage gain or loss produced by the strategy over the test period.</p>
+            </div>
+            <div class="metric-explain-card glass-card">
+              <span class="met-name">WIN RATE (%)</span>
+              <p>The percentage of completed trades that closed with a net profit. <em>(e.g. 6 out of 10 = 60%)</em>.</p>
+            </div>
+            <div class="metric-explain-card glass-card">
+              <span class="met-name">EQUITY CURVE</span>
+              <p>The continuous line tracking portfolio capital trajectory over time, showing steady compounding or drawdown periods.</p>
+            </div>
+            <div class="metric-explain-card glass-card">
+              <span class="met-name">BENCHMARK</span>
+              <p>The simple Buy &amp; Hold return of the underlying stock, used as the baseline to see if rules created genuine outperformance.</p>
+            </div>
+            <div class="metric-explain-card glass-card">
+              <span class="met-name">BEST DAY / WORST DAY</span>
+              <p>The highest and lowest single-day return sessions in the dataset, revealing extreme volatility events.</p>
+            </div>
+            <div class="metric-explain-card glass-card">
+              <span class="met-name">SHARPE RATIO</span>
+              <p>A measure of risk-adjusted return: how much return the strategy generated per unit of risk/volatility taken.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOPIC 07: RISK SECTION -->
+        <div class="guide-block reveal" id="topic-risk">
+          <div class="risk-warning-card">
+            <div class="risk-badge"><span class="live-dot" style="background:#f32235;"></span> RISK &amp; DISCIPLINE</div>
+            <h3>Before you trade, <em>understand the risk.</em></h3>
+            <p class="risk-lead">Quantitative modeling is an analytical discipline, not a get-rich-quick formula. Keep these market realities in mind:</p>
+            <div class="risk-grid">
+              <div class="risk-point">
+                <strong>1. Prices fluctuate in both directions</strong>
+                <p>No asset moves up in a straight line. Every position carries potential downside capital risk.</p>
+              </div>
+              <div class="risk-point">
+                <strong>2. Past performance is not future certainty</strong>
+                <p>A strategy that succeeded historically may encounter changing market regimes where its edge weakens.</p>
+              </div>
+              <div class="risk-point">
+                <strong>3. Slippage &amp; transaction friction</strong>
+                <p>Live execution differs from theory due to bid-ask spreads, order latency, and brokerage fees.</p>
+              </div>
+              <div class="risk-point">
+                <strong>4. No strategy wins 100% of trades</strong>
+                <p>Even elite quantitative systems win 50%–60% of trades and rely on disciplined position sizing and risk control.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOPIC 08: TRADINGVIEW & REDLINE QUANT PLATFORM ECOSYSTEM -->
+        <div class="guide-block reveal" id="topic-platform">
+          <div class="block-header">
+            <span class="block-num">08 / ECOSYSTEM</span>
+            <h3>How Redline Quant <em>works together.</em></h3>
+            <p>A cohesive 5-step workflow linking research, testing, analytics, and live market tracking.</p>
+          </div>
+
+          <div class="platform-flow-grid" id="how-it-works">
+            <a class="p-flow-step glass-card" href="#terminal">
+              <span class="p-num">01</span>
+              <h4>Choose a Stock</h4>
+              <p>Search any Indian (NSE) or US (NASDAQ/NYSE) ticker in the Backtest Terminal.</p>
+              <span class="p-link">01 / Terminal →</span>
+            </a>
+
+            <a class="p-flow-step glass-card" href="#terminal">
+              <span class="p-num">02</span>
+              <h4>Backtest an Idea</h4>
+              <p>Test Fast &amp; Slow MA crossover parameters against multi-year historical bars.</p>
+              <span class="p-link">02 / Terminal →</span>
+            </a>
+
+            <a class="p-flow-step glass-card" href="#strategy">
+              <span class="p-num">03</span>
+              <h4>Analyze the Results</h4>
+              <p>Run 60-day 15m intraday analysis in Strategy Lab and download CSV &amp; Excel sheets.</p>
+              <span class="p-link">03 / Strategy Lab →</span>
+            </a>
+
+            <a class="p-flow-step glass-card" href="#live">
+              <span class="p-num">04</span>
+              <h4>View the Live Chart</h4>
+              <p>Inspect real-time TradingView technicals on the responsive mobile phone screen.</p>
+              <span class="p-link">04 / TradingView →</span>
+            </a>
+
+            <a class="p-flow-step glass-card active" href="#guide">
+              <span class="p-num">05</span>
+              <h4>Keep Learning</h4>
+              <p>Revisit this guide to deepen your understanding of quant concepts and indicators.</p>
+              <span class="p-link">05 / Beginner Guide →</span>
+            </a>
+          </div>
+        </div>
+
+      </div><!-- /guide-content -->
+
+      <!-- Educational Disclaimer Card -->
+      <div class="guide-disclaimer-card glass-panel reveal">
+        <div class="disclaimer-inner">
+          <span class="eyebrow">EDUCATIONAL RESEARCH PLATFORM</span>
+          <p>Redline Quant is an educational research interface. Historical results, backtest simulations, and indicator outputs do not guarantee future market performance. This guide is built strictly for learning and research purposes and does not constitute financial, investment, or trading advice.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- TESLA WEB DEVELOPMENT — MASTER CREDITS FOOTER -->
+  <footer class="site-footer reveal" id="credits">
+    <div class="footer-glass-card glass-panel">
+      <div class="footer-brand-section">
+        <div class="footer-badge">
+          <span class="live-dot" style="background:#f32235;"></span> CREATIVE DIGITAL STUDIO
+        </div>
+        <h2 class="footer-title">TESLA WEB DEVELOPMENT</h2>
+        <p class="footer-author">Designed &amp; Developed by <strong>JAI RG</strong></p>
+      </div>
+
+      <div class="footer-pitch-section">
+        <p class="footer-pitch">Need a modern website for your business, portfolio, startup, or project?</p>
+        <a class="primary-btn footer-cta-btn" href="https://teslawebdevelopoment.netlify.app/" target="_blank" rel="noopener noreferrer">
+          VISIT TESLA WEB DEVELOPMENT <span>↗</span>
+        </a>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-bottom-row">
+        <div class="footer-copyright">
+          <span>&copy; 2026 Tesla Web Development. All rights reserved.</span>
+        </div>
+        <div class="footer-actions">
+          <a class="jump-top-btn" href="#home" aria-label="Back to top of page">
+            BACK TO TOP <span>↑</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
