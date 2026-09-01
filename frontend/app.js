@@ -6,7 +6,7 @@
 "use strict";
 
 /* ─── Config ──────────────────────────────────────────────── */
-const API_BASE = "http://localhost:8000";
+const API_BASE = "https://redline-quant.onrender.com";
 const SEARCH_API = `${API_BASE}/api/market/search`;
 const BACKTEST_API = `${API_BASE}/api/v1/backtest`;
 const STRATEGY_LAB_API = `${API_BASE}/api/v1/strategy-lab`;
