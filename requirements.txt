@@ -3,4 +3,4 @@ uvicorn
 pandas
 numpy
 numba
-pandas-ta
+git+https://github.com/twopirllc/pandas-ta.git
