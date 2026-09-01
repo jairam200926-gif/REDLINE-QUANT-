@@ -1,1 +1,9 @@
-fastapiuvicornpandasnumpynumbapandas-tarequests
+﻿fastapi
+uvicorn
+pandas
+numpy
+numba==0.61.2
+pandas-ta==0.4.71b0
+requests
+yfinance
+openpyxl
